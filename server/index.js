@@ -46,19 +46,19 @@ function handleMessageRouting(from, message, to = null) {
     // 🧠 AI-Like Topology Decision
     let effectiveTopology = currentTopology;
   
-    if (message.toLowerCase().includes('alert')) {
-      effectiveTopology = 'broadcast';
-    } else if (ids.length >= 10) {
-      effectiveTopology = 'mesh';
-    } else if (ids.length >= 7) {
-      effectiveTopology = 'tree';
-    } else if (ids.length >= 4) {
-      effectiveTopology = 'star';
-    } else {
-      effectiveTopology = 'ring';
-    }
+    // if (message.toLowerCase().includes('alert')) {
+    //   effectiveTopology = 'broadcast';
+    // } else if (ids.length >= 10) {
+    //   effectiveTopology = 'mesh';
+    // } else if (ids.length >= 7) {
+    //   effectiveTopology = 'tree';
+    // } else if (ids.length >= 4) {
+    //   effectiveTopology = 'star';
+    // } else {
+    //   effectiveTopology = 'ring';
+    // }
   
-    console.log(`🤖 AI Topology Decision: ${effectiveTopology} (from ${from})`);
+    console.log(`AI Topology Decision: ${effectiveTopology} (from ${from})`);
   
     switch (effectiveTopology) {
       case 'ring': {
@@ -68,7 +68,7 @@ function handleMessageRouting(from, message, to = null) {
         nodes[next]?.send(JSON.stringify({ from, message }));
         break;
       }
-  
+    
       case 'broadcast': {
         ids.forEach(id => {
           if (id !== from) {
@@ -78,9 +78,9 @@ function handleMessageRouting(from, message, to = null) {
         });
         break;
       }
-  
+    
       case 'star': {
-        const center = 'node1';
+        const center = 'node1'; // fixed center node
         if (from === center) {
           ids.forEach(id => {
             if (id !== center) {
@@ -94,7 +94,7 @@ function handleMessageRouting(from, message, to = null) {
         }
         break;
       }
-  
+    
       case 'mesh': {
         ids.forEach(id => {
           if (id !== from) {
@@ -104,7 +104,7 @@ function handleMessageRouting(from, message, to = null) {
         });
         break;
       }
-  
+    
       case 'tree': {
         const tree = buildBinaryTree(ids);
         const children = tree[from] || [];
@@ -112,6 +112,11 @@ function handleMessageRouting(from, message, to = null) {
           console.log(`[${from}] -> ${message} -> [${child}]`);
           nodes[child]?.send(JSON.stringify({ from, message }));
         });
+        break;
+      }
+    
+      default: {
+        console.log(`⚠ Unknown topology: ${effectiveTopology}`);
         break;
       }
     }
@@ -150,16 +155,16 @@ app.post('/topology', (req, res) => {
 });
 
 // Send a message
-// app.post('/send', (req, res) => {
-//   const { from, message } = req.body;
+app.post('/sendmessage', (req, res) => {
+  const { from, message } = req.body;
 
-//   if (!from || !message) {
-//     return res.status(400).json({ error: "Missing 'from' or 'message' field." });
-//   }
+  if (!from || !message) {
+    return res.status(400).json({ error: "Missing 'from' or 'message' field." });
+  }
 
-//   handleMessageRouting(from, message);
-//   res.status(200).json({ message:"Message sent from here!!"});
-// });
+  handleMessageRouting(from, message);
+  res.status(200).json({ message:"Message sent from here!!"});
+});
 
 // Send a message
 app.post('/send', (req, res) => {
