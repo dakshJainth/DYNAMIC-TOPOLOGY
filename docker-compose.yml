@@ -1,0 +1,48 @@
+version: '3'
+services:
+  server:
+    build: ./server
+    ports:
+      - "5050:5050"
+
+  node1:
+    build: ./node-app
+    environment:
+      - NODE_ID=node1
+    depends_on:
+      - server
+
+  node2:
+    build: ./node-app
+    environment:
+      - NODE_ID=node2
+    depends_on:
+      - server
+
+  node3:
+    build: ./node-app
+    environment:
+      - NODE_ID=node3
+    depends_on:
+      - server
+
+  node4:
+    build: ./node-app
+    environment:
+      - NODE_ID=node4
+    depends_on:
+      - server
+
+  node5:
+    build: ./node-app
+    environment:
+      - NODE_ID=node5
+    depends_on:
+      - server
+
+  node10:
+    build: ./node-app
+    environment:
+      - NODE_ID=node10
+    depends_on:
+      - server

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dynamic Topology</title>
+</head>
+<body>
+  <h1>Dynamic Topology Management</h1>
+  <button onclick="setTopology('ring')">Ring</button>
+  <button onclick="setTopology('broadcast')">Broadcast</button>
+  <!-- add more topologies -->
+
+  <br><br>
+  <input type="text" id="fromNode" placeholder="From Node (e.g., node1)">
+  <input type="text" id="msg" placeholder="Message">
+  <button onclick="sendMessage()">Send</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
